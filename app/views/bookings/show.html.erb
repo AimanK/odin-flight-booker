@@ -1,0 +1,29 @@
+<h2> Here's your completed booking </h2>
+<h3> Enjoy your Trip! </h3>
+
+    <h4>Departure Airport: </h4>
+    <p><%= @booking.flight.departure_airport.code %></p>
+
+    <h4>Arrival Airport </h4>
+    <p><%= @booking.flight.arrival_airport.code %></p>
+
+    <h4>Number of passengers </h4>
+    <p><%= @number_of_passengers %></p>
+
+    <h4>Flight date:</h4>
+    <p><%= @flight.start_datetime.to_date %></p>
+
+    <h2>Passenger Information</h2>
+    <ul>
+        <% @booking.passengers.each_with_index do |passenger, index| %>
+            <li>
+                <strong>Passenger <%= index + 1 %>:</strong>
+            </li>
+            <li>
+                <%= passenger.name %>
+            </li>
+            <li>
+                <%= passenger.email %>
+            </li><br>
+        <% end %>
+    </ul>

@@ -1,0 +1,39 @@
+<h1>Aiman Airways</h1>
+<h3>Welcome to Flight Search</h3>
+
+<%= form_with url: root_path, method: :get do |form| %>
+    <%= form.label :departure_airport_id, "Departure Airport" %>
+    <%= form.collection_select :departure_airport_id, @airports, :last, :first %><br>
+
+    <%= form.label :arrival_airport_id, "Arrival Airport" %>
+    <%= form.collection_select :arrival_airport_id, @airports, :last, :first %><br>
+
+    <%= form.label :number_of_passengers, "Number of Passengers" %>
+    <%= form.select :number_of_passengers, options_for_select(1..4), prompt: "Select Number of Passengers" %><br>
+
+    <%= form.label :flight_date, "Flight Date" %>
+    <%= form.select :flight_date, options_for_select(@flight_dates), { prompt: "Select Flight Date" } %><br>
+
+    <%= form.submit "Search Flights" %>
+<% end %>
+
+<% if @flights.any? %>
+  <h2>Select a Flight</h2>
+  <%= form_with url: new_booking_path, method: :get, local: true do |f| %>
+    <% @flights.each do |flight| %>
+      <div>
+        <%= f.radio_button :selected_flight_id, flight.id %>
+        <%= label_tag "flight_#{flight.id}", "Flight ##{flight.id}: #{flight.departure_airport.code} to #{flight.arrival_airport.code} on #{flight.start_datetime.strftime('%B %d, %Y %I:%M %p')}" %>
+      </div>
+    <% end %>
+
+    <!-- Hidden Field for Number of Passengers -->
+    <%= f.hidden_field :number_of_passengers, value: params[:number_of_passengers] %>
+
+    <div>
+      <%= f.submit "Book Flight" %>
+    </div>
+  <% end %>
+<% else %>
+  <p>No flights found matching your search criteria.</p>
+<% end %>
